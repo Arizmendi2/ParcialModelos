@@ -1,0 +1,59 @@
+#metodo de cuadrado medio para generar numeros aleatorios, este metodo genera ciclos cortos,que es lo 
+#que no queremos
+install.packages("installr") 
+library(installr) 
+updateR() 
+version 
+install.packages("dplyr")
+library(dplyr)
+cuad_med<- function(seed, n) {
+  seeds <- numeric(n)
+  values <- numeric(n)
+  for(i in 1:n) {
+    x<- seed ^ 2
+    seed = case_when(
+      nchar(x) >2 ~ (x %/% 1e2) %% 1e4,
+     TRUE ~ 0)
+     values[i] <- x
+     seeds[i]<- seed
+   }
+   cbind(seeds, values)
+ }
+x<- cuad_med(1931,10)
+x
+#los valores que se estan generando caen rapidamente a cero, por lo cual no es un buen metodo
+
+#metodo congruencial mixto
+n<-19  #numero de simulaciones
+num_a<- numeric(n)
+seed<-7
+for (j in 1:n)
+{seed<- ((5*seed)+3)%%(16)
+num_a[j]<-seed/(16)
+}
+num_a
+#ya nos dio un resultado mejor y no se va al cero tan directo
+
+#SE quieren generar numeros al azar con la exponcial con la trasformada inversa
+lambda<- 2
+nsim<- 10^5 #numero de simulaciones
+set.seed(1)
+U <- runif(nsim)
+X<- -log(U)/lambda # -log(1-u)/lambda ... es la formula que sacamos en la libreta
+X
+hist(X, breaks = 100, freq = FALSE, xlim = c(0,5), ylim = c(0,2.5))
+curve(dexp(x,lambda), lwd=2, add= TRUE, col= "red")
+#CON LA FORMA FACIL, HAREMOS LA FUNCION rexp
+rexp(10^5,2)
+
+# se requiere generar numeros al azar con un weibull con alpha=2 y lambda=1
+lambda<- 1
+nsim<- 10^5 #numero de simulaciones
+set.seed(1)
+U <- runif(nsim)
+X<- (-log(U))^(1/2)
+X
+hist(X, breaks = 100, freq = FALSE, xlim = c(0,5), ylim = c(0,2.5))
+curve(dweibull(x,2, scale = 1, log = FALSE), lwd=2, add= TRUE, col= "red")
+#CON LA FORMA FACIL, HAREMOS LA FUNCION rexp
+rweibull(10^5, 2, scale = 1)
