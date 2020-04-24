@@ -1,0 +1,69 @@
+?sample
+?distribution
+sample(1:20,8, replace=FALSE)
+#SIMULACION DEL LANZAMIENTO DE UN DADO
+sample(1:6,1, replace = FALSE)
+#simulacion del lanzamiento de 4 dados
+sample(1:6,4,replace = TRUE)
+#CONSIDERANDO BERNULLI SE VA A HACER EL LANZAMIENTO DE UNA MODENA
+#1 
+set.seed(1)
+nsim<-1000
+x<- sample(c(cara=1, cruz=0), nsim, replace = TRUE,prob = c(0.5, 0.5) )
+x
+#¿como aproximamos ls probabilidad de caras?
+mean(x)
+#grafica para ver los resultados
+barplot(100*table(x)/nsim )
+#2
+set.seed(1)
+nsim<-10000
+p<-.5
+x<- rbinom(nsim, size = 1, prob=p)
+n<-1:nsim
+mean(x)
+plot(n,cumsum(x)/n, type = "l", ylab = "Proporcion de caras", xlab = "Numero de Lanzamientos", 
+     ylim = c(0,1))
+abline(h=p, lty=2, col="red")
+?abline
+#entre mas se haga el experimento, su resultado se tiene a aparecera una constante, es  lo que dice 
+#la ley de los grandes numeros, la roja es la prob que yo asigne, por eso se va pegando mas.
+
+#vamos a hacer los mismo pero con una binomial
+set.seed(1)
+nsim<-1000
+p<-.48
+x<- rbinom(nsim, size = 10, prob=p)
+n<-1:nsim
+mean(x)
+plot(n,cumsum(x)/n, type = "l", ylab = "Proporcion de caras", xlab = "Numero de Lanzamientos", 
+     ylim = c(0,10))
+abline(h=n*p, lty=2, col="red")
+#ejercicio: usar la funcion rbinom y realizar 1000 simulaciones de x-->bin(15,0.6)
+#comparar media muestral con media poblacional y de igual forma la varianza
+set.seed(1)
+nsim<-10000
+p<-.6
+x<- rbinom(nsim, size = 15, prob=p)
+n<-1:nsim
+mean(x) #media muestral
+var(x) #var muestral
+#ejercicio: genere dos muestras de una poblacion binomial de n=6 p=0.2, 
+#una con un tamaño 
+#de 30 y otra de 80 con semilla de 1587 
+set.seed(1587)
+nsim<-30
+p<-.2
+x<- rbinom(nsim, size = 6, prob=p)
+n<-1:nsim
+mean(x) #media muestral = 1.3, poblacional=1.2
+var(x) #var muestral=.7 pob=.96
+sqrt(var(x)) # desv muestral= .8893711
+set.seed(1587)
+nsim<-80
+p<-.2
+x<- rbinom(nsim, size = 6, prob=p)
+n<-1:nsim
+mean(x) #media muestral = 1.2375
+var(x) #var muestral=.790981
+#conforme el numero de simulaciones aumente, los resultados se aproximan a los poblacionales
